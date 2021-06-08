@@ -3,7 +3,6 @@ const router = require('express').Router();
 const isAuth = require('../auth/isAuth')
 const Order = require('../../models/order/order');
 const Product = require('../../models/product/product');
-const { compare } = require('bcryptjs');
 const product = require('../../models/product/product');
 
 
