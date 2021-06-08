@@ -1,15 +1,7 @@
 const router = require('express').Router();
-
 const isAuth = require('../auth/isAuth')
 const Order = require('../../models/order/order');
 const Product = require('../../models/product/product');
-
-
-
-
-
-
-
 
 router.post('/', isAuth, async  ( req, res) => {
 const user = req.jwt._id;
@@ -62,7 +54,6 @@ router.put('/:id', async (req, res) => {
         return res.sendStatus(400);
     });
 });
-
 
 router.delete('/:id', async (req, res) => {
     const id = req.params.id;
