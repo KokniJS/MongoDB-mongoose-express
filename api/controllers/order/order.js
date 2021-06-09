@@ -8,12 +8,16 @@ const user = req.jwt._id;
 const {__id , isDel } = req.body;
 const order = {  
          products :   req.body.products,
-         qty     :     req.body.qty     
+         amout     :     req.body.amout    
                 };
 const product = await Product.findById(order.products);
-const total = product.price*order.qty;
-          
-    await Order.create({owner:__id, user : user,   order  ,total, isDel})
+if(product.quanitity <= 0 ){
+        return   res.status(404).json({ error: 'Product wrong!'});
+}  else {
+     total = product.quanitity * order.amout;
+}
+         
+         await Order.create({owner:__id, user : user,   order  ,total, isDel})
    
 .then(order => {
     return res.json(order);
