@@ -11,13 +11,15 @@ const order = {
          amout     :     req.body.amout    
                 };
 const product = await Product.findById(order.products);
-if(product.quanitity <= 0 ){
+if(product.quanitity < order.amout){
         return   res.status(404).json({ error: 'Product wrong!'});
 }  else {
-     total = product.quanitity * order.amout;
-}
-         
-         await Order.create({owner:__id, user : user,   order  ,total, isDel})
+    const qty  =   product.quanitity - order.amout;
+    const result = await Product.updateOne({ _id: order.products}, { $set: {quanitity : qty}})      
+    total = product.price * order.amout;
+}   
+    
+    await Order.create({owner:__id, user : user,   order  ,total, isDel})
    
 .then(order => {
     return res.json(order);
