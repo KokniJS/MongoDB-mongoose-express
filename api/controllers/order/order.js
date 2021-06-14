@@ -21,7 +21,6 @@ if(product.quanitity < order.amout ){
 }   
 if(req.body.promocode){
     const sale = await Promocode.findOne({promoName : promocode});
-    result = `Ваша скидка -${sale.procent}%` ;
     if(sale == null){
     return res.status(404).json({ error: 'Такого промокода нет!'}); 
 }else {
@@ -29,7 +28,7 @@ if(req.body.promocode){
     total = total-count;  
     }
 };   
-await Order.create({owner:__id, user : user,   order  , total, isDel, result})
+await Order.create({owner:__id, user : user,   order  , total, isDel})
 
 .then(order => {
     return res.json(order);
