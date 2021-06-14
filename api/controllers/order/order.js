@@ -2,25 +2,42 @@ const router = require('express').Router();
 const isAuth = require('../auth/isAuth')
 const Order = require('../../models/order/order');
 const Product = require('../../models/product/product');
+const Promocode = require('../../models/promocode/promocode')
+
+
 
 router.post('/', isAuth, async  ( req, res) => {
 const user = req.jwt._id;
-const {__id , isDel } = req.body;
+const {__id , isDel ,promocode} = req.body;
 const order = {  
          products :   req.body.products,
          amout     :     req.body.amout    
                 };
 const product = await Product.findById(order.products);
-if(product.quanitity < order.amout){
+
+   
+
+
+if(product.quanitity < order.amout ){
         return   res.status(404).json({ error: 'Product wrong!'});
-}  else {
+} else{
+
     const qty  =   product.quanitity - order.amout;
-    const result = await Product.updateOne({ _id: order.products}, { $set: {quanitity : qty}})      
+    const goods = await Product.updateOne({ _id: order.products}, { $set: {quanitity : qty}})      
     total = product.price * order.amout;
 }   
-    
-    await Order.create({owner:__id, user : user,   order  ,total, isDel})
-   
+if(req.body.promocode){
+    const sale = await Promocode.findOne({promoName : promocode});
+    result = `Ваша скидка -${sale.procent}%` ;
+    if(sale == null){
+    return res.status(404).json({ error: 'Такого промокода нет!'}); 
+}else {
+    const count = total*(sale.procent/100);
+    total = total-count;  
+    }
+};   
+await Order.create({owner:__id, user : user,   order  , total, isDel, result})
+
 .then(order => {
     return res.json(order);
 })

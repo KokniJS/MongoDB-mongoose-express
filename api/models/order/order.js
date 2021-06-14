@@ -16,16 +16,23 @@ const Order = mongoose.Schema({
         required:false ,
         
     },
-    qty:{
+    amout:{
         type:Number,
         require:false
         },   
  
-}],
+    }],
+   
     total:{
         type:Number,
         require:false
     },
+    promocode:{
+            type: ObjectId,
+            ref: 'Promocode',
+            require:false
+    }  , 
+   
    
     isDel:  { type : Boolean, required:false },
         
