@@ -4,8 +4,6 @@ const Order = require('../../models/order/order');
 const Product = require('../../models/product/product');
 const Promocode = require('../../models/promocode/promocode')
 
-
-
 router.post('/', isAuth, async  ( req, res) => {
 const user = req.jwt._id;
 const {__id , isDel ,promocode} = req.body;
@@ -14,14 +12,9 @@ const order = {
          amout     :     req.body.amout    
                 };
 const product = await Product.findById(order.products);
-
-   
-
-
 if(product.quanitity < order.amout ){
         return   res.status(404).json({ error: 'Product wrong!'});
 } else{
-
     const qty  =   product.quanitity - order.amout;
     const goods = await Product.updateOne({ _id: order.products}, { $set: {quanitity : qty}})      
     total = product.price * order.amout;
