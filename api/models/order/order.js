@@ -3,7 +3,7 @@ const {
   Schema: {
     Types: { ObjectId, Boolean },
   },
-} = mongoose; //Number
+} = mongoose;
 
 const Order = mongoose.Schema({
   user: {
